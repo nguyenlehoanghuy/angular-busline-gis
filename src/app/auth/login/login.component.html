@@ -1,0 +1,25 @@
+<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+    <app-authentication-card-logo></app-authentication-card-logo>
+
+    <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+        <h2 class="mb-3 text-center text-3xl font-semibold text-gray-700 dark:text-gray-300">Đăng nhập vào hệ thống</h2>
+
+        <form [formGroup]="loginForm" (submit)="submitLogin()">
+            <div>
+                <label for="email" class="block font-medium text-sm text-gray-700 dark:text-gray-300">Email</label>
+                <input id="email" type="email" name="email" formControlName="email" class="block mt-1 py-2 px-3 border w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" required autofocus />
+            </div>
+
+            <div class="mt-4">
+                <label for="password" class="block font-medium text-sm text-gray-700 dark:text-gray-300">Password</label>
+                <input id="password" type="password" name="password" formControlName="password" class="block mt-1 py-2 px-3 border w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" required />
+            </div>
+            
+            <div class="flex items-center justify-end mt-4">
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-600 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-green-500 dark:hover:bg-white focus:bg-green-700 dark:focus:bg-white active:bg-green-700 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                    Đăng nhập
+                </button>
+            </div>
+        </form>        
+    </div>    
+</div>
