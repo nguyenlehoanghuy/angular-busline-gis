@@ -16,6 +16,6 @@ export class UserService {
   }
 
   getAllUsers(): Observable<User> {
-    return this.http.get<User>(`${this.url}`);
+    return this.http.get<User>(`${this.url}/users`);
   }
 }

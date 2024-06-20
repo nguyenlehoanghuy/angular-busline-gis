@@ -7,15 +7,15 @@ import { User } from '../interfaces/user';
   providedIn: 'root',
 })
 export class AuthService {
-  url = 'https://xettuyen.ctu.edu.vn/api';
+  url = 'http://localhost:5000/auth';
   access_token = 'access_token';
-  user_key = 'auth-user';
+  access_user = 'access_user';
 
   constructor(private http: HttpClient) {}
 
   submitLogin(email: string, password: string): Observable<any> {
     console.log(`Login received: email: ${email}, password: ${password}.`);
-    return this.http.post<any>(`${this.url}/auth/login`, {
+    return this.http.post<any>(`${this.url}/login`, {
       email: email,
       password: password,
     });
@@ -30,14 +30,14 @@ export class AuthService {
     sessionStorage.setItem(this.access_token, token);
   }
 
-  getUser(): string | null {
-    const user = sessionStorage.getItem(this.user_key);
+  getUser(): User | null {
+    const user = sessionStorage.getItem(this.access_user);
     return user ? JSON.parse(user) : null;
   }
 
-  setUser(user: string): void {
-    sessionStorage.removeItem(this.user_key);
-    sessionStorage.setItem(this.user_key, JSON.stringify(user));
+  setUser(user: User): void {
+    sessionStorage.removeItem(this.access_user);
+    sessionStorage.setItem(this.access_user, JSON.stringify(user));
   }
 
   clearStorage(): void {
