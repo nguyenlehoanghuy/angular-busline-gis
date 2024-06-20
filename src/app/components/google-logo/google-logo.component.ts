@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './google-logo.component.html',
-  styleUrl: './google-logo.component.css'
+  styleUrl: './google-logo.component.css',
 })
-export class GoogleLogoComponent {
-
-}
+export class GoogleLogoComponent {}

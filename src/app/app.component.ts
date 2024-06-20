@@ -7,7 +7,7 @@ import { LoginComponent } from './auth/login/login.component';
   standalone: true,
   imports: [RouterModule, LoginComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = 'angular-busline-gis';

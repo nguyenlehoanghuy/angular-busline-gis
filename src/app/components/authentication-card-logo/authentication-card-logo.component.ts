@@ -6,8 +6,6 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './authentication-card-logo.component.html',
-  styleUrl: './authentication-card-logo.component.css'
+  styleUrl: './authentication-card-logo.component.css',
 })
-export class AuthenticationCardLogoComponent {
-
-}
+export class AuthenticationCardLogoComponent {}
