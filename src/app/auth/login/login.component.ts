@@ -3,18 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationCardLogoComponent } from '../../components/authentication-card-logo/authentication-card-logo.component';
-import { GoogleLogoComponent } from '../../components/google-logo/google-logo.component';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    AuthenticationCardLogoComponent,
-    GoogleLogoComponent,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, AuthenticationCardLogoComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
