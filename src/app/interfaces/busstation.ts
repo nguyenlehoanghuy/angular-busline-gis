@@ -1,6 +1,9 @@
 export interface BusStation {
   id: number;
   name: string;
-  address: string;
-  id_ward: number;
+  length: number;
+  price: number;
+  number_of_trips: number;
+  time_between_trips: number;
+  start_time_first: string;
 }
