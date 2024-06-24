@@ -1,8 +1,9 @@
 export interface BusLine {
   id: number;
   name: string;
-  long: number;
-  lat: number;
-  address: string;
-  id_ward: number;
+  length: number;
+  price: number;
+  number_of_trips: number;
+  time_between_trips: number;
+  start_time_first: string;
 }

@@ -29,8 +29,8 @@ export class LoginComponent {
         this.loginForm.value.password ?? ''
       )
       .subscribe({
-        next: (user) => {
-          this.authService.setToken(user.access_token);
+        next: (res: any) => {
+          this.authService.setToken(res.access_token);
           this.router.navigate(['/']);
         },
         error: (err) => {
