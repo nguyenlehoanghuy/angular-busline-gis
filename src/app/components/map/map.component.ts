@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
 import { BusStationService } from '../../services/busstation.service';
 import * as L from 'leaflet';
+import 'leaflet-routing-machine';
 
 @Component({
   selector: 'app-map',
@@ -21,6 +22,23 @@ export class MapComponent implements AfterViewInit {
     this.map = L.map('map', {
       center: [10.0279603, 105.7664918],
       zoom: 15,
+    });
+
+    const latlng: L.LatLng[] = [];
+    latlng.push(new L.LatLng(10.0279603, 105.7664918));
+    latlng.push(new L.LatLng(10.0289603, 105.7664918));
+    latlng.push(new L.LatLng(10.0289603, 105.7664918));
+
+    const routeControl = L.Routing.control({
+      waypoints: latlng,
+      routeWhileDragging: false,
+    }).addTo(this.map);
+
+    routeControl.on('routesfound', function (e) {
+      const distance = e.routes[0].summary.totalDistance;
+      const time = e.routes[0].summary.totalTime;
+
+      console.log(distance, time);
     });
 
     this.busStationIcon = L.icon({
