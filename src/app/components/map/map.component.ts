@@ -27,19 +27,17 @@ export class MapComponent implements AfterViewInit {
     const latlng: L.LatLng[] = [];
     latlng.push(new L.LatLng(10.0279603, 105.7664918));
     latlng.push(new L.LatLng(10.0289603, 105.7664918));
-    latlng.push(new L.LatLng(10.0289603, 105.7664918));
 
-    const routeControl = L.Routing.control({
+    L.Routing.control({
       waypoints: latlng,
-      routeWhileDragging: false,
-    }).addTo(this.map);
+    })
+      .addTo(this.map)
+      .on('routesfound', function (e) {
+        const distance = e.routes[0].summary.totalDistance;
+        const time = e.routes[0].summary.totalTime;
 
-    routeControl.on('routesfound', function (e) {
-      const distance = e.routes[0].summary.totalDistance;
-      const time = e.routes[0].summary.totalTime;
-
-      console.log(distance, time);
-    });
+        console.log(e.routes[0].instructions);
+      });
 
     this.busStationIcon = L.icon({
       iconUrl: this.iconUrl,
