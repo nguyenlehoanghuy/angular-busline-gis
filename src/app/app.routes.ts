@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './auth/login/login.component';
+import { userGuard } from './guards/user.guard';
 
 export const routes: Routes = [
   {
@@ -12,5 +13,11 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     title: 'Bus line GIS - Đăng nhập',
+  },
+  {
+    path: 'dashboard',
+    component: LoginComponent,
+    title: 'Bus line GIS - Bảng điều khiển',
+    canActivate: [userGuard],
   },
 ];

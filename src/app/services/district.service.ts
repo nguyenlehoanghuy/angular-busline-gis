@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 import { District } from '../interfaces/district';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DistrictService {
-  url = 'http://localhost:5000';
+  url = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
