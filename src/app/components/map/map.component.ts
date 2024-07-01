@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
 import { BusStationService } from '../../services/busstation.service';
+import { OsrmService } from '../../services/osrm.service';
+import { environment } from '../../../environments/environment.development';
 import * as L from 'leaflet';
-import 'leaflet-routing-machine';
 
 @Component({
   selector: 'app-map',
@@ -12,40 +13,27 @@ import 'leaflet-routing-machine';
 })
 export class MapComponent implements AfterViewInit {
   busStationService = inject(BusStationService);
-  iconUrl = 'x-buyt.png';
-  map: any;
-  busStationIcon: any;
+  osrmService = inject(OsrmService);
+  map: L.Map | any;
+  currentPosition: L.LatLng | any = [10.0279603, 105.7664918];
+  start = new L.LatLng(10.045321866882755, 105.73239384737883);
+  end = new L.LatLng(10.048559943627993, 105.72614487451285);
+  busStationIcon = L.icon(environment.busIcon as L.IconOptions);
 
   constructor() {}
 
   initMap(): void {
-    this.map = L.map('map', {
-      center: [10.0279603, 105.7664918],
-      zoom: 15,
-    });
-
-    const latlng: L.LatLng[] = [];
-    latlng.push(new L.LatLng(10.0279603, 105.7664918));
-    latlng.push(new L.LatLng(10.0289603, 105.7664918));
-
-    L.Routing.control({
-      waypoints: latlng,
-    })
-      .addTo(this.map)
-      .on('routesfound', function (e) {
-        const distance = e.routes[0].summary.totalDistance;
-        const time = e.routes[0].summary.totalTime;
-
-        console.log(e.routes[0].instructions);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        this.currentPosition = [lat, lng];
       });
+    }
 
-    this.busStationIcon = L.icon({
-      iconUrl: this.iconUrl,
-      iconSize: [32, 40],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      tooltipAnchor: [16, -28],
-      shadowSize: [41, 41],
+    this.map = L.map('map', {
+      center: this.currentPosition,
+      zoom: 15,
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -70,8 +58,45 @@ export class MapComponent implements AfterViewInit {
     });
   }
 
+  displayRoutingBetweenBusStations(
+    map: L.Map,
+    start: L.LatLng,
+    end: L.LatLng
+  ): void {
+    const coordinates = `${start.lng},${start.lat};${end.lng},${end.lat}`;
+    this.osrmService
+      .getRouting(
+        'route',
+        'v1',
+        'car',
+        coordinates,
+        'alternatives=false&steps=true&geometries=geojson&overview=full&annotations=true'
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res.code == 'Ok') {
+            const listLatLng = [];
+            console.log(res.routes[0].legs[0]);
+            for (const step of res.routes[0].legs[0].steps) {
+              console.log(step);
+              for (const LngLat of step.geometry.coordinates) {
+                const LatLng = new L.LatLng(LngLat[1], LngLat[0]);
+                listLatLng.push(LatLng);
+              }
+            }
+            L.polyline(listLatLng, { color: 'blue' }).addTo(this.map);
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+
   ngAfterViewInit(): void {
     this.initMap();
     this.displayAllBusStationMarkers(this.map, this.busStationIcon);
+    this.displayRoutingBetweenBusStations(this.map, this.start, this.end);
   }
 }
