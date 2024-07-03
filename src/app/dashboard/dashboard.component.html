@@ -1,0 +1,73 @@
+<div class="min-h-screen bg-sky-50 dark:bg-gray-900">
+    <header class="bg-white dark:bg-slate-900">
+        <div
+            class="sticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 lg:border-b lg:border-slate-900/10 dark:border-slate-50/[0.06] bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-transparent">
+            <div class="max-w-8xl mx-auto">
+                <div
+                    class="py-4 border-b border-slate-900/10 lg:px-8 lg:border-0 dark:border-slate-300/10 mx-4 lg:mx-0">
+                    <div class="relative flex items-center">
+                        <a class="mr-3 flex-none w-[2.0625rem] overflow-hidden md:w-auto" href="/">
+                            <img src="logo.svg" alt="logo" class="min-w-20" />
+                        </a>
+                        <div class="font-semibold">
+                            <h2 class="text-xl text-slate-900 dark:text-white leading-tight">
+                                Bus line GIS home page
+                            </h2>
+                        </div>
+                        <div class="relative hidden lg:flex items-center ml-auto">
+                            <nav class="text-sm leading-6 font-semibold text-slate-700 dark:text-slate-200">
+                                <ul class="flex space-x-8">
+                                    <li>
+                                        <a class="hover:text-sky-500 dark:hover:text-sky-400"
+                                            href="/docs/installation">Docs</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <div class="flex items-center border-l border-slate-200 ml-6 pl-6 dark:border-slate-800">
+                                <a href="https://github.com/nguyenlehoanghuy/angular-busline-gis"
+                                    class="ml-6 block text-slate-400 hover:text-slate-500 dark:hover:text-slate-300">
+                                    <img src="github-icon.svg" alt="github" class="size-6" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <ul
+            class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+            <li class="me-2">
+                <a (click)="openTab=1" aria-current="page"
+                    class="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500">Quản
+                    lý tuyến xe</a>
+            </li>
+            <li class="me-2">
+                <a (click)="openTab=2"
+                    class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Quản
+                    lý trạm xe</a>
+            </li>
+            <li class="me-2">
+                <a (click)="openTab=3"
+                    class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Quản
+                    lý lịch trình</a>
+            </li>
+        </ul>
+          @if (openTab == 1) {
+            <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+                <app-bus-line-datatable></app-bus-line-datatable>
+            </div>            
+          }
+          @if (openTab == 2) {
+            <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+                <app-bus-station-datatable></app-bus-station-datatable>
+            </div>            
+          }
+          @if (openTab == 3) {
+            <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+                Coming soon!
+            </div>            
+          }
+    </main>
+</div>

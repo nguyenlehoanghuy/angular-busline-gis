@@ -1,0 +1,53 @@
+<div class="text-gray-900 bg-gray-200">
+    <div class="p-4 flex">
+        <h1 class="text-3xl">Quản lý trạm xe</h1>
+    </div>
+    <div class="px-3 py-4 flex justify-center">
+        <table class="w-full text-md bg-white shadow-md rounded mb-4">
+            <tbody>
+                <tr class="border-b">
+                    <th class="text-left p-3 px-5">ID</th>
+                    <th class="text-left p-3 px-5">Tên trạm</th>
+                    <th class="text-left p-3 px-5">Kinh độ</th>
+                    <th class="text-left p-3 px-5">Vĩ độ</th>
+                    <th class="text-left p-3 px-5">Địa chỉ</th>
+                    <th class="text-left p-3 px-5">Phường, xã</th>
+                    <th></th>
+                </tr>
+                @for (busStation of busStations; track busStation.id) {
+                    <tr class="border-b hover:bg-orange-100 bg-gray-100">
+                        <td class="p-3 px-5">
+                            <input type="text" class="bg-transparent border-b-2 border-gray-300 py-2" [value]="busStation.id" >
+                        </td>
+                        <td class="p-3 px-5">
+                            <input type="text" class="bg-transparent border-b-2 border-gray-300 py-2" [value]="busStation.name" >
+                        </td>
+                        <td class="p-3 px-5">
+                            <input type="text" class="bg-transparent border-b-2 border-gray-300 py-2" [value]="busStation.long" >
+                        </td>
+                        <td class="p-3 px-5">
+                            <input type="text" class="bg-transparent border-b-2 border-gray-300 py-2" [value]="busStation.lat" >
+                        </td>
+                        <td class="p-3 px-5">
+                            <input type="text" class="bg-transparent border-b-2 border-gray-300 py-2" [value]="busStation.address" >
+                        </td>
+                        <td class="p-3 px-5">
+                            <select class="bg-transparent border-b-2 border-gray-300 py-2" [value]="busStation.id_ward">
+                                @for (ward of wards; track trackByWard(ward.id_ward, ward.id_district)) {
+                                    <option [value]="trackByWard(ward.id_ward, ward.id_district)">{{ ward.name }}</option>
+                                }
+                            </select>
+                            <input type="text" class="bg-transparent border-b-2 border-gray-300 py-2"  >
+                        </td>                  
+                        <td class="p-3 px-5 flex justify-end">
+                            <button type="button"
+                                class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" (click)="saveBusStation(busStation.id)">Lưu</button>
+                            <button type="button"
+                                class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" (click)="removeBusStation(busStation.id)">Xóa</button>
+                        </td>
+                    </tr>
+                  }
+            </tbody>
+        </table>
+    </div>
+</div>
