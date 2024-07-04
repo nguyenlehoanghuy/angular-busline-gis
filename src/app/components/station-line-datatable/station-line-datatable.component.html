@@ -8,9 +8,10 @@
             (click)="addNewStationLine()">
             Thêm
         </button>
-        <select class="bg-transparent border-b-2 border-gray-300 py-2">
+        <select class="bg-transparent border-b-2 border-gray-300 py-2" (change)="displayBusStationByIdBusLine($event)">
+            <option [value]="">Chọn tuyến</option>
             @for (busLine of busLines; track busLine.id) {
-            <option [value]="busLine.id" (click)="displayBusStationByIdBusLine(busLine.id)">{{ busLine.name }}</option>
+            <option [value]="busLine.id">{{ busLine.name }}</option>
             }
         </select>
     </div>

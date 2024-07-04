@@ -42,16 +42,17 @@ export class StationLineDatatableComponent {
     });
   }
 
-  displayBusStationByIdBusLine(id: number) {
-    this.stationLineService.getAllBusStationsByIdBusLine(id).subscribe({
-      next: (res: any) => {
-        this.stationLines = res.data;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => console.info('complete'),
-    });
+  displayBusStationByIdBusLine(event: Event) {
+    console.log(event);
+    // this.stationLineService.getAllBusStationsByIdBusLine().subscribe({
+    //   next: (res: any) => {
+    //     this.stationLines = res.data;
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //   },
+    //   complete: () => console.info('complete'),
+    // });
   }
 
   addNewStationLine() {
