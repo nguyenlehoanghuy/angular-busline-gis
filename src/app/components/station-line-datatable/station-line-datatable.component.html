@@ -1,1 +1,76 @@
-<p>station-line-datatable works!</p>
+<div class="text-gray-900 bg-gray-200">
+    <div class="p-4 flex">
+        <h1 class="text-3xl">Quản lý lịch trình</h1>
+    </div>
+    <div class="px-3 flex">
+        <button type="button"
+            class="mb-4 text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+            (click)="addNewStationLine()">
+            Thêm
+        </button>
+        <select class="bg-transparent border-b-2 border-gray-300 py-2">
+            @for (busLine of busLines; track busLine.id) {
+            <option [value]="busLine.id" (click)="displayBusStationByIdBusLine(busLine.id)">{{ busLine.name }}</option>
+            }
+        </select>
+    </div>
+    <div class="px-3 py-4 flex justify-center">
+        <table class="w-full text-md bg-white shadow-md rounded mb-4">
+            <tbody>
+                <tr class="border-b">
+                    <th class="text-left p-3 px-5">Tuyến xe</th>
+                    <th class="text-left p-3 px-5">Trạm xe</th>
+                    <th class="text-left p-3 px-5">Thứ tự</th>
+                    <th class="text-left p-3 px-5">Thời gian bắt đầu</th>
+                    <th class="text-left p-3 px-5">Khoảng cách đến trạm kế tiếp</th>
+                    <th></th>
+                </tr>
+                @for (stationLine of stationLines; track trackByStationLine(stationLine.id_bus_station,
+                stationLine.id_bus_line)) {
+                <tr class="border-b hover:bg-orange-100 bg-gray-100">
+                    <td class="p-3 px-5">
+                        <select class="bg-transparent border-b-2 border-gray-300 py-2"
+                            [(ngModel)]="stationLine.id_bus_line">
+                            @for (busLine of busLines; track busLine.id) {
+                            <option [value]="busLine.id">{{ busLine.name }}</option>
+                            }
+                        </select>
+                    </td>
+                    <td class="p-3 px-5">
+                        <select class="bg-transparent border-b-2 border-gray-300 py-2"
+                            [(ngModel)]="stationLine.id_bus_station">
+                            @for (busStation of busStations; track busStation.id) {
+                            <option [value]="busStation.id">{{ busStation.name }}</option>
+                            }
+                        </select>
+                    </td>
+                    <td class="p-3 px-5">
+                        <input type="text" class="bg-transparent border-b-2 border-gray-300
+              py-2" [(ngModel)]="stationLine.seq">
+                    </td>
+                    <td class="p-3 px-5">
+                        <input type="text" class="bg-transparent border-b-2 border-gray-300
+              py-2" [(ngModel)]="stationLine.start_time_first">
+                    </td>
+                    <td class="p-3 px-5">
+                        <input type="text" class="bg-transparent border-b-2 border-gray-300
+              py-2" [(ngModel)]="stationLine.distance">
+                    </td>
+                    <td class="p-3 px-5 flex justify-end">
+                        <button type="button"
+                            class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                            (click)="saveStationLine(stationLine)">
+                            Lưu
+                        </button>
+                        <button type="button"
+                            class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                            (click)="removeStationLine(stationLine)">
+                            Xóa
+                        </button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
