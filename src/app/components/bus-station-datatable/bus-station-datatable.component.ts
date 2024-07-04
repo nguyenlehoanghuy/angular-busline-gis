@@ -16,11 +16,14 @@ export class BusStationDatatableComponent {
   busStationService = inject(BusStationService);
   wardService = inject(WardService);
   busStations: any;
+  busStationData: any;
+  filterBusStation: any;
   wards: any;
 
   constructor() {
     this.busStationService.getAllBusStations().subscribe({
       next: (res: any) => {
+        this.busStationData = res.data;
         this.busStations = res.data;
       },
       error: (err) => {
@@ -41,7 +44,7 @@ export class BusStationDatatableComponent {
   }
 
   addNewBusStation() {
-    this.busStations.push({
+    this.busStationData.push({
       id: '',
       name: '',
       long: '',
@@ -49,6 +52,16 @@ export class BusStationDatatableComponent {
       address: '',
       id_ward: '',
     });
+
+    this.busStations = this.busStationData;
+  }
+
+  searchBusStation() {
+    this.busStations = this.busStationData.filter((busStation: any) =>
+      busStation.name
+        .toLowerCase()
+        .includes(this.filterBusStation.toLowerCase())
+    );
   }
 
   saveBusStation(busStation: BusStation) {

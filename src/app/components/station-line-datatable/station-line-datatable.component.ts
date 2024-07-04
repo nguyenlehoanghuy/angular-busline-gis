@@ -11,12 +11,13 @@ import { StationLine } from '../../interfaces/stationline';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './station-line-datatable.component.html',
-  styleUrl: './station-line-datatable.component.css'
+  styleUrl: './station-line-datatable.component.css',
 })
 export class StationLineDatatableComponent {
   busLineService = inject(BusLineService);
   busStationService = inject(BusStationService);
   stationLineService = inject(StationLineService);
+  filterIdBusLine = -1;
   busLines: any;
   busStations: any;
   stationLines: any;
@@ -42,17 +43,16 @@ export class StationLineDatatableComponent {
     });
   }
 
-  displayBusStationByIdBusLine(event: Event) {
-    console.log(event);
-    // this.stationLineService.getAllBusStationsByIdBusLine().subscribe({
-    //   next: (res: any) => {
-    //     this.stationLines = res.data;
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   },
-    //   complete: () => console.info('complete'),
-    // });
+  displayBusStationByIdBusLine(id: number) {
+    this.stationLineService.getAllBusStationsByIdBusLine(id).subscribe({
+      next: (res: any) => {
+        this.stationLines = res.data;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => console.info('complete'),
+    });
   }
 
   addNewStationLine() {

@@ -14,10 +14,13 @@ import { BusLine } from '../../interfaces/busline';
 export class BusLineDatatableComponent {
   busLineService = inject(BusLineService);
   busLines: any;
+  busLineData: any;
+  filterBusLine: any;
 
   constructor() {
     this.busLineService.getAllBusLines().subscribe({
       next: (res: any) => {
+        this.busLineData = res.data;
         this.busLines = res.data;
       },
       error: (err) => {
@@ -28,7 +31,7 @@ export class BusLineDatatableComponent {
   }
 
   addNewBusLine() {
-    this.busLines.push({
+    this.busLineData.push({
       id: '',
       name: '',
       length: '',
@@ -37,10 +40,19 @@ export class BusLineDatatableComponent {
       time_between_trips: '',
       start_time_first: '',
     });
+
+    this.busLines = this.busLineData;
+  }
+
+  searchBusLine() {
+    this.busLines = this.busLineData.filter((busLine: any) =>
+      busLine.name.toLowerCase().includes(this.filterBusLine.toLowerCase())
+    );
   }
 
   saveBusLine(busLine: BusLine) {
     // do something
+    console.log(busLine);
   }
 
   removeBusLine(busLine: BusLine) {

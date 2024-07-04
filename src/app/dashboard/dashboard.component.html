@@ -38,21 +38,48 @@
     <main>
         <ul
             class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+            @if (openTab == 1) {
             <li class="me-2">
                 <a (click)="openTab=1" aria-current="page"
                     class="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500">Quản
                     lý tuyến xe</a>
             </li>
+            }
+            @else {
+            <li class="me-2">
+                <a (click)="openTab=1" aria-current="page"
+                    class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Quản
+                    lý tuyến xe</a>
+            </li>
+            }
+            @if (openTab == 2) {
+            <li class="me-2">
+                <a (click)="openTab=2"
+                    class="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500">Quản
+                    lý trạm xe</a>
+            </li>
+            }
+            @else {
             <li class="me-2">
                 <a (click)="openTab=2"
                     class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Quản
                     lý trạm xe</a>
             </li>
+            }
+            @if (openTab == 3) {
+            <li class="me-2">
+                <a (click)="openTab=3"
+                    class="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500">Quản
+                    lý lịch trình</a>
+            </li>
+            }
+            @else {
             <li class="me-2">
                 <a (click)="openTab=3"
                     class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Quản
                     lý lịch trình</a>
             </li>
+            }
         </ul>
         @if (openTab == 1) {
         <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">

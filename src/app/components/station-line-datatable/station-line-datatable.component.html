@@ -8,8 +8,8 @@
             (click)="addNewStationLine()">
             Thêm
         </button>
-        <select class="bg-transparent border-b-2 border-gray-300 py-2" (change)="displayBusStationByIdBusLine($event)">
-            <option [value]="">Chọn tuyến</option>
+        <select class="bg-transparent border-b-2 border-gray-300 py-2" [(ngModel)]="filterIdBusLine" (change)="displayBusStationByIdBusLine(filterIdBusLine)">
+            <option [value]="-1" disabled>Chọn tuyến</option>
             @for (busLine of busLines; track busLine.id) {
             <option [value]="busLine.id">{{ busLine.name }}</option>
             }

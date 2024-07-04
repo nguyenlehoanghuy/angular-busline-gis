@@ -8,6 +8,12 @@
             (click)="addNewBusStation()">
       Thêm
     </button>
+    <input class="bg-transparent border-b-2 border-gray-300 py-2" [(ngModel)]="filterBusStation" />
+        <button type="button"
+            class="mb-4 text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+            (click)="searchBusStation()">
+            Tìm kiếm
+        </button>
   </div>
   <div class="px-3 py-4 flex justify-center">
     <table class="w-full text-md bg-white shadow-md rounded mb-4">
