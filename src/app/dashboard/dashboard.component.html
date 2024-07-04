@@ -54,20 +54,20 @@
                     lý lịch trình</a>
             </li>
         </ul>
-          @if (openTab == 1) {
-            <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
-                <app-bus-line-datatable></app-bus-line-datatable>
-            </div>            
-          }
-          @if (openTab == 2) {
-            <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
-                <app-bus-station-datatable></app-bus-station-datatable>
-            </div>            
-          }
-          @if (openTab == 3) {
-            <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
-                Coming soon!
-            </div>            
-          }
+        @if (openTab == 1) {
+        <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+            <app-bus-line-datatable></app-bus-line-datatable>
+        </div>
+        }
+        @if (openTab == 2) {
+        <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+            <app-bus-station-datatable></app-bus-station-datatable>
+        </div>
+        }
+        @if (openTab == 3) {
+        <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+            <app-station-line-datatable></app-station-line-datatable>
+        </div>
+        }
     </main>
 </div>
