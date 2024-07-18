@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
+import { BuslineItemComponent } from '../busline-item/busline-item.component';
 import { BusStationService } from '../../services/busstation.service';
+import { BusLineService } from '../../services/busline.service';
 import { OsrmService } from '../../services/osrm.service';
 import { environment } from '../../../environments/environment.development';
 import * as L from 'leaflet';
@@ -7,22 +9,22 @@ import * as L from 'leaflet';
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [],
+  imports: [BuslineItemComponent],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
 })
 export class MapComponent implements AfterViewInit {
   busStationService = inject(BusStationService);
+  busLineService = inject(BusLineService);
   osrmService = inject(OsrmService);
   map: L.Map | any;
   currentPosition: L.LatLng | any = [10.0279603, 105.7664918];
   start = new L.LatLng(10.045321866882755, 105.73239384737883);
   end = new L.LatLng(10.048559943627993, 105.72614487451285);
   busStationIcon = L.icon(environment.busIcon as L.IconOptions);
+  busLines: any;
 
-  constructor() {}
-
-  initMap(): void {
+  constructor() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude;
@@ -30,7 +32,18 @@ export class MapComponent implements AfterViewInit {
         this.currentPosition = [lat, lng];
       });
     }
+    this.busLineService.getAllBusLines().subscribe({
+      next: (res: any) => {
+        this.busLines = res.data;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => console.info('complete'),
+    });
+  }
 
+  initMap(): void {
     this.map = L.map('map', {
       center: this.currentPosition,
       zoom: 15,
@@ -48,7 +61,11 @@ export class MapComponent implements AfterViewInit {
         for (const busStation of res.data) {
           const lat = busStation.lat;
           const lng = busStation.long;
-          L.marker([lat, lng], { icon: icon }).addTo(map);
+          const marker = L.marker([lat, lng], { icon: icon })
+            .bindPopup(
+              `<div>Trạm dừng ${busStation.name}</div><div>${busStation.address}</div>`
+            )
+            .addTo(map);
         }
       },
       error: (err) => {
@@ -98,5 +115,13 @@ export class MapComponent implements AfterViewInit {
     this.initMap();
     this.displayAllBusStationMarkers(this.map, this.busStationIcon);
     this.displayRoutingBetweenBusStations(this.map, this.start, this.end);
+  }
+
+  onChange(event: any) {
+    console.log('New value = ' + event.target.value);
+  }
+
+  onClick(id: number) {
+    console.log('New value = ' + id);
   }
 }

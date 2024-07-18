@@ -1,4 +1,27 @@
-<div class="absolute inset-x-0 top-14 bottom-0 mx-8 my-8">
+<div class="absolute inset-x-0 top-14 bottom-0 mx-8 my-8 flex">
+  <div class="border-slate-900 border-2 w-1/4 mr-4 overflow-y-auto">
+    <div class="border-slate-900 border-b-2">
+      <ul class="flex list-none p-0">
+        <li class="flex-1">
+          <a href="#"
+            class="block p-4 text-center text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500">Tra
+            cứu</a>
+        </li>
+        <li class="flex-1">
+          <a href="#"
+            class="block p-4 text-center hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Tìm
+            đường</a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <input type="text" placeholder="Tìm kiếm..." class="w-full px-3 py-2 border" (change)="onChange($event)">
+    </div>
+    <!-- Nội dung của phần tử này -->
+    @for(busLine of busLines; track busLine.id) {
+    <app-busline-item [busLine]="busLine" (click)="onClick(busLine.id)"></app-busline-item>
+    }
+  </div>
   <div class="border-slate-900 border-2 size-full">
     <div id="map" class="size-full"></div>
   </div>
