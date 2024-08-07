@@ -2,24 +2,63 @@
   <div class="border-slate-900 border-2 w-1/4 mr-4 overflow-y-auto">
     <div class="border-slate-900 border-b-2">
       <ul class="flex list-none p-0">
+        @if (openTab == 1) {
         <li class="flex-1">
-          <a href="#"
+          <a (click)="toggleTabs(1)"
             class="block p-4 text-center text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500">Tra
             cứu</a>
         </li>
+        } @else {
         <li class="flex-1">
-          <a href="#"
+          <a (click)="toggleTabs(1)"
+            class="block p-4 text-center hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Tra
+            cứu</a>
+        </li>
+        } @if (openTab == 2) {
+        <li class="flex-1">
+          <a (click)="toggleTabs(2)"
+            class="block p-4 text-center text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500">Tìm
+            đường</a>
+        </li>
+        } @else {
+        <li class="flex-1">
+          <a (click)="toggleTabs(2)"
             class="block p-4 text-center hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Tìm
             đường</a>
         </li>
+        }
       </ul>
     </div>
+
+    @if(openTab == 1) {
     <div>
-      <input type="text" placeholder="Tìm kiếm..." class="w-full px-3 py-2 border" (change)="onChange($event)">
+      <input type="text" placeholder="Tìm kiếm..." class="w-full px-3 py-2 border" (change)="searchBusLine($event)" />
     </div>
-    <!-- Nội dung của phần tử này -->
+
     @for(busLine of busLines; track busLine.id) {
-    <app-busline-item [busLine]="busLine" (click)="onClick(busLine.id)"></app-busline-item>
+    <app-busline-item [busLine]="busLine" (click)="displayBusLine(busLine.id)"></app-busline-item>
+    }
+    }
+
+    @if(openTab == 2) {
+    <div>
+      <label for="startPoint"> Trạm bắt đầu </label>
+      <select id="startPoint" class="w-full px-3 py-2 border" [(ngModel)]="startPoint">
+        <option value="-1" disabled>Chọn trạm bắt đầu</option>
+        @for(busStation of busStationData; track busStation.id) {
+        <option [value]="busStation.id">{{busStation.name}}</option>
+        }
+      </select>
+    </div>
+    <div>
+      <label for="endPoint"> Trạm cuối </label>
+      <select id="endPoint" class="w-full px-3 py-2 border" [(ngModel)]="endPoint" (change)="onChange()">
+        <option value="-1" disabled>Chọn trạm cuối</option>
+        @for(busStation of busStationData; track busStation.id) {
+        <option [value]="busStation.id">{{busStation.name}}</option>
+        }
+      </select>
+    </div>
     }
   </div>
   <div class="border-slate-900 border-2 size-full">

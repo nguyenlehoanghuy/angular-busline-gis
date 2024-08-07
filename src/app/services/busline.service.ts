@@ -17,6 +17,10 @@ export class BusLineService {
     return this.http.get<BusLine>(`${this.url}/bus_lines/${id}`);
   }
 
+  getAllBusStationsByIdBusLine(id: number): Observable<BusLine> {
+    return this.http.get<BusLine>(`${this.url}/bus_lines/${id}/bus_stations`);
+  }
+
   getAllBusLines(): Observable<BusLine[]> {
     return this.http.get<BusLine[]>(`${this.url}/bus_lines`);
   }
