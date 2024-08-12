@@ -2,6 +2,7 @@ import { AfterViewInit, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BuslineItemComponent } from '../busline-item/busline-item.component';
+import { RoutingItemComponent } from '../routing-item/routing-item.component';
 import { BusStationService } from '../../services/busstation.service';
 import { BusLineService } from '../../services/busline.service';
 import { OsrmService } from '../../services/osrm.service';
@@ -12,7 +13,12 @@ import * as L from 'leaflet';
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, FormsModule, BuslineItemComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    BuslineItemComponent,
+    RoutingItemComponent,
+  ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css',
 })
@@ -23,8 +29,6 @@ export class MapComponent implements AfterViewInit {
   routeLineService = inject(RouteLineService);
   map: L.Map | any;
   currentPosition: L.LatLng | any = [10.0279603, 105.7664918];
-  start = new L.LatLng(10.045321866882755, 105.73239384737883);
-  end = new L.LatLng(10.048559943627993, 105.72614487451285);
   busStationIcon = L.icon(environment.busIcon as L.IconOptions);
   busLines: any;
   busLineData: any;
@@ -34,6 +38,7 @@ export class MapComponent implements AfterViewInit {
   openTab = 1;
   startPoint = -1;
   endPoint = -1;
+  routing: any;
 
   constructor() {
     if (navigator.geolocation) {
@@ -83,7 +88,6 @@ export class MapComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.initMap();
     this.displayAllBusStationMarkers(this.map, this.busStationIcon);
-    this.displayRoutingBetweenBusStations(this.map, this.start, this.end);
   }
 
   //  Hiển thị tất cả Marker trạm xe trên bản đồ
@@ -107,43 +111,6 @@ export class MapComponent implements AfterViewInit {
     });
   }
 
-  // Hiển thị đường đi giữa các trạm
-  displayRoutingBetweenBusStations(
-    map: L.Map,
-    start: L.LatLng,
-    end: L.LatLng
-  ): void {
-    const coordinates = `${start.lng},${start.lat};${end.lng},${end.lat}`;
-    this.osrmService
-      .getRouting(
-        'route',
-        'v1',
-        'car',
-        coordinates,
-        'alternatives=false&steps=true&geometries=geojson&overview=full&annotations=true'
-      )
-      .subscribe({
-        next: (res: any) => {
-          if (res.code == 'Ok') {
-            const listLatLng = [];
-            console.log(res.routes[0].legs[0]);
-            for (const step of res.routes[0].legs[0].steps) {
-              console.log(step);
-              for (const LngLat of step.geometry.coordinates) {
-                const LatLng = new L.LatLng(LngLat[1], LngLat[0]);
-                listLatLng.push(LatLng);
-              }
-            }
-            L.polyline(listLatLng, { color: 'blue' }).addTo(this.map);
-          }
-        },
-        error: (err) => {
-          console.log(err);
-        },
-        complete: () => console.info('complete'),
-      });
-  }
-
   // Chuyển tab
   toggleTabs($tabNumber: number) {
     this.openTab = $tabNumber;
@@ -156,24 +123,49 @@ export class MapComponent implements AfterViewInit {
     );
   }
 
-  // Hiển thị tuyến đường lên bản đồ
+  // Hiển thị tuyến bus lên bản đồ
   displayBusLine(id: number) {
     this.busLineService.getAllBusStationsByIdBusLine(id).subscribe({
       next: (res: any) => {
-        const listLatLng = [];
+        const coordinates = [];
         for (const bus_station of res.data) {
-          const latLng = [bus_station.lat, bus_station.long];
-          listLatLng.push(latLng);
+          const latLng = `${bus_station.long},${bus_station.lat}`;
+          coordinates.push(latLng);
         }
-        const polyline = L.polyline(listLatLng, { color: 'blue' }).addTo(
-          this.map
-        );
-        for (const busLineRouting of this.listBusLinesRouting) {
-          console.log(busLineRouting);
-          this.map.removeLayer(busLineRouting);
-        }
-        this.listBusLinesRouting = [];
-        this.listBusLinesRouting.push(polyline);
+
+        this.osrmService
+          .getRouting(
+            'route',
+            'v1',
+            'car',
+            coordinates.join(';'),
+            'alternatives=false&steps=true&geometries=geojson&overview=full&annotations=true'
+          )
+          .subscribe({
+            next: (res: any) => {
+              if (res.code == 'Ok') {
+                const listLatLng = [];
+                for (const step of res.routes[0].legs[0].steps) {
+                  for (const LngLat of step.geometry.coordinates) {
+                    const LatLng = new L.LatLng(LngLat[1], LngLat[0]);
+                    listLatLng.push(LatLng);
+                  }
+                }
+                const polyline = L.polyline(listLatLng, {
+                  color: 'blue',
+                }).addTo(this.map);
+                for (const busLineRouting of this.listBusLinesRouting) {
+                  this.map.removeLayer(busLineRouting);
+                }
+                this.listBusLinesRouting = [];
+                this.listBusLinesRouting.push(polyline);
+              }
+            },
+            error: (err) => {
+              console.log(err);
+            },
+            complete: () => console.info('complete'),
+          });
       },
       error: (err) => {
         console.log(err);
@@ -182,11 +174,60 @@ export class MapComponent implements AfterViewInit {
     });
   }
 
-  // Test api
-  onChange() {
+  // Hiển thị đường đi giữa 2 tuyến tìm được
+  displayRouting(rank: number) {
+    const nodes = this.routing[rank].nodes;
+    const coordinates = [];
+    for (const node of nodes) {
+      console.log(node);
+      const latLng = `${node.lng},${node.lat}`;
+      coordinates.push(latLng);
+    }
+
+    this.osrmService
+      .getRouting(
+        'route',
+        'v1',
+        'car',
+        coordinates.join(';'),
+        'alternatives=false&steps=true&geometries=geojson&overview=full&annotations=true'
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res.code == 'Ok') {
+            const listLatLng = [];
+            for (const step of res.routes[0].legs[0].steps) {
+              for (const LngLat of step.geometry.coordinates) {
+                const LatLng = new L.LatLng(LngLat[1], LngLat[0]);
+                listLatLng.push(LatLng);
+              }
+            }
+            const polyline = L.polyline(listLatLng, {
+              color: 'blue',
+            }).addTo(this.map);
+            for (const busLineRouting of this.listBusLinesRouting) {
+              this.map.removeLayer(busLineRouting);
+            }
+            this.listBusLinesRouting = [];
+            this.listBusLinesRouting.push(polyline);
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => console.info('complete'),
+      });
+  }
+
+  // Tim đường đi từ trạm bắt đầu đến trạm kết thúc
+  computeRoute() {
     this.routeLineService.getRoutes(this.startPoint, this.endPoint).subscribe({
       next: (res: any) => {
-        console.log(res);
+        this.routing = res.data;
+        this.routing.sort((a: any, b: any) => a.total_weight - b.total_weight);
+        this.routing.forEach((item: any, index: any) => {
+          item.rank = index;
+        });
       },
       error: (err) => {
         console.log(err);
