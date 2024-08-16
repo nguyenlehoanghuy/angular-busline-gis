@@ -143,14 +143,14 @@ export class MapComponent implements AfterViewInit {
           )
           .subscribe({
             next: (res: any) => {
+              console.log(res);
               if (res.code == 'Ok') {
                 const listLatLng = [];
-                for (const step of res.routes[0].legs[0].steps) {
-                  for (const LngLat of step.geometry.coordinates) {
-                    const LatLng = new L.LatLng(LngLat[1], LngLat[0]);
-                    listLatLng.push(LatLng);
-                  }
+                for (const step of res.routes[0].geometry.coordinates) {
+                  const LatLng = new L.LatLng(step[1], step[0]);
+                  listLatLng.push(LatLng);
                 }
+                console.log(listLatLng);
                 const polyline = L.polyline(listLatLng, {
                   color: 'blue',
                 }).addTo(this.map);
@@ -196,11 +196,9 @@ export class MapComponent implements AfterViewInit {
         next: (res: any) => {
           if (res.code == 'Ok') {
             const listLatLng = [];
-            for (const step of res.routes[0].legs[0].steps) {
-              for (const LngLat of step.geometry.coordinates) {
-                const LatLng = new L.LatLng(LngLat[1], LngLat[0]);
-                listLatLng.push(LatLng);
-              }
+            for (const step of res.routes[0].geometry.coordinates) {
+              const LatLng = new L.LatLng(step[1], step[0]);
+              listLatLng.push(LatLng);
             }
             const polyline = L.polyline(listLatLng, {
               color: 'blue',

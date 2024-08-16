@@ -18,6 +18,9 @@ export class OsrmService {
     coordinates: string,
     options: string
   ): Observable<any> {
+    console.log(
+      `${this.url}/${service}/${version}/${profile}/${coordinates}?${options}`
+    );
     return this.http.get<any>(
       `${this.url}/${service}/${version}/${profile}/${coordinates}?${options}`
     );
