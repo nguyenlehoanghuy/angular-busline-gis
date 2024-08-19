@@ -26,13 +26,13 @@
                     <th class="text-left p-3 px-5">Số chuyến</th>
                     <th class="text-left p-3 px-5">Thời gian luân phiên</th>
                     <th class="text-left p-3 px-5">Thời gian bắt đầu</th>
-                    <th></th>
+                    <th class="text-left p-3 px-5">Chỉnh sửa</th>
                 </tr>
                 @for (busLine of busLines; track busLine.id) {
                 <tr class="border-b hover:bg-orange-100 bg-gray-100">
                     <td class="p-3 px-5">
                         <input type="text" class="bg-transparent border-b-2 border-gray-300 py-2"
-                            [(ngModel)]="busLine.id" />
+                            [(ngModel)]="busLine.id" disabled />
                     </td>
                     <td class="p-3 px-5">
                         <input type="text" class="bg-transparent border-b-2 border-gray-300 py-2"

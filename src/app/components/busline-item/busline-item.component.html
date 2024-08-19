@@ -3,8 +3,9 @@
         <img src="bus.svg" alt="bus">
     </div>
     <div class="p-4">
-        <h3 class="text-lg font-semibold">Tuyến {{ busLine.id }}</h3>
-        <p class="text-sm text-gray-600 mt-2">{{ busLine.name }}</p>
-        <span class="font-bold">Giá {{busLine.price}}</span>
+        <h3 class="text-lg font-semibold">Tuyến {{ busLine.id + "-" + busLine.name }}</h3>
+        <p class="text-sm text-gray-600 mt-2">Thời gian bắt đầu {{ busLine.start_time_first }}</p>
+        <p class="text-sm text-gray-600 mt-2">Số chuyến {{ busLine.number_of_trips }} - Luân phiên {{ busLine.time_between_trips }} phút</p>        
+        <span class="font-bold">Độ dài {{ busLine.length }} Km - Giá {{busLine.price}} VNĐ</span>
     </div>
 </div>

@@ -58,7 +58,7 @@ export class StationLineDatatableComponent {
   addNewStationLine() {
     this.stationLines.push({
       id_bus_station: '',
-      id_bus_line: '',
+      id_bus_line: this.filterIdBusLine,
       seq: '',
       start_time_first: '',
       distance: '',
@@ -66,12 +66,48 @@ export class StationLineDatatableComponent {
   }
 
   saveStationLine(stationLine: StationLine) {
-    // do something
-    console.log(stationLine);
+    this.stationLineService.getStationLineById(stationLine).subscribe({
+      next: (res: any) => {
+        this.stationLineService.updateStationLineById(stationLine).subscribe({
+          next: (res: any) => {
+            console.log(res);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => console.info('complete'),
+        });
+      },
+      error: (err) => {
+        this.stationLineService.insertStationLine(stationLine).subscribe({
+          next: (res: any) => {
+            console.log(res);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => console.info('complete'),
+        });
+      },
+      complete: () => console.info('complete'),
+    });
   }
 
   removeStationLine(stationLine: StationLine) {
-    // do something
+    this.stationLineService.removeStationLineById(stationLine).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.stationLines = this.stationLines.filter(
+          (sl: StationLine) =>
+            sl.id_bus_station !== stationLine.id_bus_station ||
+            sl.id_bus_line !== stationLine.id_bus_line
+        );
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => console.info('complete'),
+    });
   }
 
   trackByStationLine(id_bus_station: number, id_bus_line: number): string {

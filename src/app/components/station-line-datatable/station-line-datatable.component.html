@@ -24,14 +24,14 @@
                     <th class="text-left p-3 px-5">Thứ tự</th>
                     <th class="text-left p-3 px-5">Thời gian bắt đầu</th>
                     <th class="text-left p-3 px-5">Khoảng cách đến trạm kế tiếp</th>
-                    <th></th>
+                    <th class="text-left p-3 px-5">Chỉnh sửa</th>
                 </tr>
                 @for (stationLine of stationLines; track trackByStationLine(stationLine.id_bus_station,
                 stationLine.id_bus_line)) {
                 <tr class="border-b hover:bg-orange-100 bg-gray-100">
                     <td class="p-3 px-5">
                         <select class="bg-transparent border-b-2 border-gray-300 py-2"
-                            [(ngModel)]="stationLine.id_bus_line">
+                            [(ngModel)]="stationLine.id_bus_line" disabled>
                             @for (busLine of busLines; track busLine.id) {
                             <option [value]="busLine.id">{{ busLine.name }}</option>
                             }

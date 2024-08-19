@@ -4,16 +4,16 @@
   </div>
   <div class="px-3 flex">
     <button type="button"
-            class="mb-4 text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-            (click)="addNewBusStation()">
+      class="mb-4 text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+      (click)="addNewBusStation()">
       Thêm
     </button>
     <input class="bg-transparent border-b-2 border-gray-300 py-2" [(ngModel)]="filterBusStation" />
-        <button type="button"
-            class="mb-4 text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-            (click)="searchBusStation()">
-            Tìm kiếm
-        </button>
+    <button type="button"
+      class="mb-4 text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+      (click)="searchBusStation()">
+      Tìm kiếm
+    </button>
   </div>
   <div class="px-3 py-4 flex justify-center">
     <table class="w-full text-md bg-white shadow-md rounded mb-4">
@@ -25,13 +25,13 @@
           <th class="text-left p-3 px-5">Vĩ độ</th>
           <th class="text-left p-3 px-5">Địa chỉ</th>
           <th class="text-left p-3 px-5">Phường, xã</th>
-          <th></th>
+          <th class="text-left p-3 px-5">Chỉnh sửa</th>
         </tr>
         @for (busStation of busStations; track busStation.id) {
         <tr class="border-b hover:bg-orange-100 bg-gray-100">
           <td class="p-3 px-5">
             <input type="text" class="bg-transparent border-b-2 border-gray-300
-            py-2" [(ngModel)]="busStation.id">
+            py-2" [(ngModel)]="busStation.id" disabled>
           </td>
           <td class="p-3 px-5">
             <input type="text" class="bg-transparent border-b-2 border-gray-300
@@ -51,8 +51,8 @@
           </td>
           <td class="p-3 px-5">
             <select class="bg-transparent border-b-2 border-gray-300 py-2" [(ngModel)]="busStation.id_ward">
-              @for (ward of wards; track trackByWard(ward.id_ward, ward.id_district)) {
-              <option [value]="trackByWard(ward.id_ward, ward.id_district)">{{ ward.name }}</option>
+              @for (ward of wards; track ward.id_ward) {
+              <option [value]="ward.id_ward">{{ ward.name }}</option>
               }
             </select>
           </td>

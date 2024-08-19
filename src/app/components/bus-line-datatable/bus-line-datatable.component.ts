@@ -51,11 +51,43 @@ export class BusLineDatatableComponent {
   }
 
   saveBusLine(busLine: BusLine) {
-    // do something
-    console.log(busLine);
+    if (busLine.id) {
+      this.busLineService.updateBusLineById(busLine).subscribe({
+        next: (res: any) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => console.info('complete'),
+      });
+    } else {
+      this.busLineService.insertBusLine(busLine).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          busLine.id = res.data.id;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => console.info('complete'),
+      });
+    }
   }
 
   removeBusLine(busLine: BusLine) {
-    // do something
+    this.busLineService.removeBusLineById(busLine.id).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.busLineData = this.busLineData.filter(
+          (line: BusLine) => line.id !== busLine.id
+        );
+        this.busLines = this.busLineData;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => console.info('complete'),
+    });
   }
 }

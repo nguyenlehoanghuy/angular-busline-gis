@@ -65,15 +65,41 @@ export class BusStationDatatableComponent {
   }
 
   saveBusStation(busStation: BusStation) {
-    // do something
-    console.log(busStation);
+    if (busStation.id) {
+      this.busStationService.updateBusStationById(busStation).subscribe({
+        next: (res: any) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => console.info('complete'),
+      });
+    } else {
+      this.busStationService.insertBusStation(busStation).subscribe({
+        next: (res: any) => {
+          busStation.id = res.data.id;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => console.info('complete'),
+      });
+    }
   }
 
   removeBusStation(busStation: BusStation) {
-    // do something
-  }
-
-  trackByWard(id_ward: string, id_district: string): string {
-    return id_district + id_ward;
+    this.busStationService.removeBusStationById(busStation.id).subscribe({
+      next: (res: any) => {
+        this.busStationData = this.busStationData.filter(
+          (station: BusStation) => station.id !== busStation.id
+        );
+        this.busStations = this.busStationData;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => console.info('complete'),
+    });
   }
 }
