@@ -30,6 +30,7 @@ export class MapComponent implements AfterViewInit {
   map: L.Map | any;
   currentPosition: L.LatLng | any = [10.0279603, 105.7664918];
   busStationIcon = L.icon(environment.busIcon as L.IconOptions);
+  gpsIcon = L.icon(environment.gpsIcon as L.IconOptions);
   busLines: any;
   busLineData: any;
   busStationData: any;
@@ -46,6 +47,7 @@ export class MapComponent implements AfterViewInit {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         this.currentPosition = [lat, lng];
+        L.marker([lat, lng], { icon: this.gpsIcon }).addTo(this.map);
       });
     }
 
